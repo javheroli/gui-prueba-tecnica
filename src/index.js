@@ -39,7 +39,7 @@ import {
                   />
                 </FormGroup>
               </Col>
-              <Button onClick={this.props.onClickSubmitSignUp}>Submit</Button>
+              <Button onClick={this.props.signup ? this.props.onClickSubmitSignUp : this.props.onClickSubmitLogIn}>Submit</Button>
             </Form>
             {!this.props.signup && 
                 <div> 
@@ -71,6 +71,14 @@ import {
                     </Alert>
                 </div>
             }
+            {this.props.errorLogin && 
+                <div> 
+                    <br></br>
+                    <Alert color="danger">
+                         Error: Unable to Log In
+                    </Alert>
+                </div>
+            }
             
           </Container>
         );
@@ -86,6 +94,7 @@ import {
             signup: false,
             created: false,
             repeatedUsername: false,
+            errorLogin: false,
             username: '',
             usernameForAlert: '',
             password: '',
@@ -121,6 +130,7 @@ import {
                         created: true,
                         repeatedUsername: false,
                         usernameForAlert: this.state.username, 
+                        errorLogin: false,
                         username: '',
                         password: ''}
                     );
@@ -129,6 +139,47 @@ import {
                         {signup: true,
                         created: false,
                         repeatedUsername: true,
+                        errorLogin: false,
+                        username: '',
+                        password: ''}
+                    )
+                }
+                
+            })
+        
+    }
+
+    handleClickSubmitLogIn = () => {
+        var data = {'username':this.state.username,
+                    'password' : this.state.password,
+                     }
+        fetch('https://scary-vampire-95646.herokuapp.com/api/user/login', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+            },
+            body: JSON.stringify(data), 
+        }).then((response) => {
+                if(response.status === 200) {
+                    response.json().then((responseData) => {
+                        this.setState(
+                            {token: responseData['token'],
+                            signup: null,
+                            created: null,
+                            repeatedUsername: false,
+                            errorLogin: false,
+                            usernameForAlert: this.state.username, 
+                            username: '',
+                            password: ''}
+                        );
+                    });
+                    
+                }else{
+                    this.setState(
+                        {signup: false,
+                        created: false,
+                        repeatedUsername: false,
+                        errorLogin: true,
                         username: '',
                         password: ''}
                     )
@@ -141,15 +192,23 @@ import {
 
     render(){
         return(
-             <div className="App">
-                <Login onClick={this.handleClick} signup={this.state.signup} 
-                    onClickSubmitSignUp={this.handleClickSubmitSignUp}
-                    onChangeForm={this.handleChange}
-                    created={this.state.created} 
-                    repeatedUsername={this.state.repeatedUsername}
-                    username= {this.state.username}
-                    password= {this.state.password}
-                    usernameForAlert = {this.state.usernameForAlert} />
+            <div className="App">
+            {this.state.token === null && 
+                    <Login onClick={this.handleClick} signup={this.state.signup} 
+                        onClickSubmitSignUp={this.handleClickSubmitSignUp}
+                        onClickSubmitLogIn={this.handleClickSubmitLogIn}
+                        onChangeForm={this.handleChange}
+                        created={this.state.created} 
+                        repeatedUsername={this.state.repeatedUsername}
+                        username= {this.state.username}
+                        password= {this.state.password}
+                        usernameForAlert = {this.state.usernameForAlert}
+                        errorLogin = {this.state.errorLogin} />
+            }
+            {
+                this.state.token !== null &&  
+                    <p>{this.state.token}</p> 
+            }
             </div>
         );
         
