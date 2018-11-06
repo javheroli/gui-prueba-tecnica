@@ -22,6 +22,7 @@ import {
                     id="username"
                     placeholder="Enter your username"
                     onChange={this.props.onChangeForm}
+                    value={this.props.username}
                   />
                 </FormGroup>
               </Col>
@@ -34,6 +35,7 @@ import {
                     id="password"
                     placeholder="********"
                     onChange={this.props.onChangeForm}
+                    value= {this.props.password}
                   />
                 </FormGroup>
               </Col>
@@ -57,7 +59,7 @@ import {
                 <div> 
                     <br></br>
                     <Alert color="success">
-                         Account "{this.props.username}" created successfully! Try to log in
+                         Account "{this.props.usernameForAlert}" created successfully! Try to log in
                     </Alert>
                 </div>
             }
@@ -84,8 +86,9 @@ import {
             signup: false,
             created: false,
             repeatedUsername: false,
-            username: null,
-            password: null,
+            username: '',
+            usernameForAlert: '',
+            password: '',
         };
     }
 
@@ -116,15 +119,21 @@ import {
                     this.setState(
                         {signup: false,
                         created: true,
-                        repeatedUsername: false,}
+                        repeatedUsername: false,
+                        usernameForAlert: this.state.username, 
+                        username: '',
+                        password: ''}
                     );
                 }else{
                     this.setState(
                         {signup: true,
                         created: false,
-                        repeatedUsername: true}
+                        repeatedUsername: true,
+                        username: '',
+                        password: ''}
                     )
                 }
+                
             })
         
     }
@@ -138,7 +147,9 @@ import {
                     onChangeForm={this.handleChange}
                     created={this.state.created} 
                     repeatedUsername={this.state.repeatedUsername}
-                    username= {this.state.username} />
+                    username= {this.state.username}
+                    password= {this.state.password}
+                    usernameForAlert = {this.state.usernameForAlert} />
             </div>
         );
         
