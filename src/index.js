@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import $ from "jquery";
 import {
     Alert, Container, Col, Form,
     FormGroup, Label, Input,
@@ -22,6 +21,7 @@ import {
                     name="username"
                     id="username"
                     placeholder="Enter your username"
+                    onChange={this.props.onChangeForm}
                   />
                 </FormGroup>
               </Col>
@@ -33,6 +33,7 @@ import {
                     name="password"
                     id="password"
                     placeholder="********"
+                    onChange={this.props.onChangeForm}
                   />
                 </FormGroup>
               </Col>
@@ -56,7 +57,7 @@ import {
                 <div> 
                     <br></br>
                     <Alert color="success">
-                         Account "{this.props.username}"" created successfully! Try to log in
+                         Account "{this.props.username}" created successfully! Try to log in
                     </Alert>
                 </div>
             }
@@ -84,7 +85,12 @@ import {
             created: false,
             repeatedUsername: false,
             username: null,
+            password: null,
         };
+    }
+
+    handleChange = (e) => {
+        this.setState({[e.target.name] : e.target.value});
     }
 
     handleClick = () => {
@@ -96,32 +102,30 @@ import {
     }
     
     handleClickSubmitSignUp = () => {
-        $(document).ready( () => {
-            $.ajax( {
-                context: this,
-                url:'https://scary-vampire-95646.herokuapp.com/api/user/signup',
-                type:'post',
-                data:$('#form').serialize(),
-                statusCode: {
-                    200: (response) => {
-                        this.setState(
-                            {signup: false,
-                            created: true,
-                            repeatedUsername: false,
-                            username: response['user']['username']}
-                        );
-                    },
-                    500: () => {
-                        this.setState(
-                            {signup: true,
-                            created: false,
-                            repeatedUsername: true}
-                        );
-                    }
-                  }
-                
-            });
-        });
+        var data = {'username':this.state.username,
+                    'password' : this.state.password,
+                     }
+        fetch('https://scary-vampire-95646.herokuapp.com/api/user/signup', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+            },
+            body: JSON.stringify(data), 
+        }).then((response) => {
+                if(response.status === 200) {
+                    this.setState(
+                        {signup: false,
+                        created: true,
+                        repeatedUsername: false,}
+                    );
+                }else{
+                    this.setState(
+                        {signup: true,
+                        created: false,
+                        repeatedUsername: true}
+                    )
+                }
+            })
         
     }
     
@@ -131,6 +135,7 @@ import {
              <div className="App">
                 <Login onClick={this.handleClick} signup={this.state.signup} 
                     onClickSubmitSignUp={this.handleClickSubmitSignUp}
+                    onChangeForm={this.handleChange}
                     created={this.state.created} 
                     repeatedUsername={this.state.repeatedUsername}
                     username= {this.state.username} />
