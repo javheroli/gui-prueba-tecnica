@@ -1,0 +1,88 @@
+{
+    "products": [
+        {
+            "name": "example",
+            "permalink": "example"
+        }
+    ],
+    "name": "ExampleName",
+    "permalink": "ExamplePermalink",
+    "crunchbase_url": "http://www.example.com/",
+    "homepage_url": "http://example.com",
+    "blog_url": "http://example.com",
+    "blog_feed_url": "http://example.com",
+    "twitter_username": "example",
+    "category_code": "example",
+    "number_of_employees": 600,
+    "founded_year": 1996,
+    "deadpooled_year": 2,
+    "tag_list": "example",
+    "alias_list": "exampel ",
+    "email_address": "example@mail.com",
+    "phone_number": "XXXXXXXXX",
+    "description": "http://example.com",
+    "created_at": "2007-05-25T19:24:22.000Z",
+    "updated_at": "2012-10-31T18:26:09.000Z",
+    "overview": "<p>example</p>",
+    "image": {
+        "available_sizes": [
+            [
+                [
+                    150,
+                    55
+                ],
+                "example.png"
+            ]
+        ]
+    },
+    "relationships": [{
+        "is_past": true,
+        "title": "example",
+        "person": {
+            "first_name": "example",
+            "last_name": "example",
+            "permalink": "example"
+        }
+    }],
+    "competitions": [],
+    "providerships": [{
+        "title": "example",
+        "is_past": true,
+        "provider": {
+            "name": "example",
+            "permalink": "example"
+        }
+    }],
+    "total_money_raised": "$0",
+    "funding_rounds": [],
+    "investments": [],
+    "acquisition": null,
+    "acquisitions": [],
+    "offices": [{
+        "description": "example",
+        "address1": "example",
+        "address2": "example",
+        "zip_code": "94588",
+        "city": "example",
+        "state_code": "example",
+        "country_code": "example",
+        "latitude": 37.692934,
+        "longitude": -121.904945
+    }],
+    "milestones": [],
+    "video_embeds": [],
+    "screenshots": [{
+        "available_sizes": [
+            [
+                [
+                    150,
+                    94
+                ],
+                "example.png"
+            ]
+        ],
+        "attribution": null
+    }],
+    "external_links": [],
+    "partners": []
+}

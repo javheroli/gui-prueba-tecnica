@@ -4,6 +4,7 @@ import './index.css'
 import JSONPretty from 'react-json-pretty';
 
 
+const example = require('./example.json');
 
 class ApiUsage extends React.Component {
   constructor(props) {
@@ -11,17 +12,21 @@ class ApiUsage extends React.Component {
     this.state = {
       collapse: false, tryitout: false,
       response: false, responseCode: null, responseDetails: null, responseHeaders: null,
-      _id: '',
+      _id: '', body: example,
     };
   }
 
   handleChange = (e) => {
     this.setState({[e.target.name] : e.target.value});
+
+}
+handleChangeBody = (e) => {
+  this.setState({[e.target.name] : JSON.parse(e.target.value)});
 }
 
   toggle = () => {
     this.setState({ collapse: !this.state.collapse, 
-     response: false,tryitout: false, responseCode: null, responseDetails: null, responseHeaders: null});
+     response: false,tryitout: false, responseCode: null, responseDetails: null, responseHeaders: null, body: example});
   }
 
   tryitout = () => {
@@ -111,6 +116,7 @@ class ApiUsage extends React.Component {
                       <tr>
                         <td>
                           <strong style={{marginLeft: '3%'}}>id</strong>
+                          <strong style={{color: 'red', fontSize: 'small'}}>&nbsp;&nbsp;*required</strong>
                           <p>(Type: String)</p>
 
                         </td>
@@ -127,7 +133,28 @@ class ApiUsage extends React.Component {
                         </td>
                       </tr>
                   }
-                  {//Añadir a partir de aquí el parámetro body distinguiendo que no sea el get de todas las compañias 
+                  {
+                    this.props.needBody &&
+                    <tr>
+                      <td>
+                        <strong style={{marginLeft: '3%'}}>Body</strong>
+                        <strong style={{color: 'red', fontSize: 'small'}}>&nbsp;&nbsp;*required</strong>
+                        <p>(Type: JSON)</p>
+
+                      </td>
+                      <td>
+                        <p>Introduce the company in JSON format, it can be useful the following template given:</p>
+                        <Input style={{color: 'white', backgroundColor: '#41444e', height: '600px'}}
+                          type="textarea"
+                          name="body"
+                          id="body"
+                          onChange={this.handleChangeBody}
+                          value={JSON.stringify(this.state.body, undefined, 2)}
+                          
+                          
+                          />
+                      </td>
+                    </tr>
                   }
                   {this.state.tryitout &&
                     <tr>
