@@ -1,0 +1,32 @@
+.Card:hover{
+    background-color: beige;
+    border-width: 1.5px;
+}
+.DivToScroll{   
+    background-color: #41444e;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    left: -1px;
+    padding: 10px 7px 5px;
+    max-height: 200vh;
+
+    margin-left: 3%;
+}
+
+.DivWithScroll{
+    height:600px;
+    overflow:scroll;
+    overflow-x:hidden;
+
+    padding-top: 5px;
+     border-radius: 2px;
+     max-width: 80vw;
+    max-height: 200vh;
+    background-color: #41444e;
+    color: white;
+    
+}
+
+tr:nth-child(even) {background: azure}
+tr:nth-child(odd) {background: whitesmoke}
