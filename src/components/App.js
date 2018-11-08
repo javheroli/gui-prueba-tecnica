@@ -7,7 +7,7 @@ class App extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjViZTJmYjdjNDYzYWJkMDAwNGJjZjQ1OSIsInVzZXJuYW1lIjoiamF2aGVyb2xpIn0sImlhdCI6MTU0MTYwMzkwMX0.TuFGnVbIZF52eAglwBQAoR3aehoO9DgwTFn98gMEkVo",
+            token: this.checkCookie(),
             signup: false,
             created: false,
             repeatedUsername: false,
@@ -17,6 +17,16 @@ class App extends React.Component {
             password: '',
         };
     }
+
+    checkCookie = () => {
+        var token = document.cookie;
+        if(token !== ''){
+            return token;
+        }else{
+            return null;
+        }
+    }
+
 
     handleChange = (e) => {
         this.setState({[e.target.name] : e.target.value});
@@ -91,6 +101,7 @@ class App extends React.Component {
                             username: '',
                             password: ''}
                         );
+                        document.cookie = responseData['token'];
                     });
                     
                 }else{
@@ -172,6 +183,34 @@ class App extends React.Component {
                                 uri="https://scary-vampire-95646.herokuapp.com/api/companies"
                                 token ={this.state.token}
                                 buttonColor="success"
+                                />
+                                 <br></br>
+                                <ApiUsage method="PUT" borderColor="#fca130" pathTitle="/api/companies/{:companyId}"
+                                 description="Updates all properties from the company stored in DB which _id equals to :companyId"
+                                 needId={true}
+                                descriptionExtended="Returns a Json composed of the updated company and stored in database, displaying all fields with its values changed"
+                                uri="https://scary-vampire-95646.herokuapp.com/api/companies/"
+                                token ={this.state.token}
+                                buttonColor="warning"
+                                />
+
+                                 <br></br>
+                                <ApiUsage method="PATCH" borderColor="#fca130" pathTitle="/api/companies/{:companyId}"
+                                 description="Updates selected properties from the company stored in DB which _id equals to :companyId"
+                                 needId={true}
+                                descriptionExtended="Returns a Json composed of the updated company and stored in database, displaying all fields with its values changed"
+                                uri="https://scary-vampire-95646.herokuapp.com/api/companies/"
+                                token ={this.state.token}
+                                buttonColor="warning"
+                                />
+                                 <br></br>
+                                <ApiUsage method="DELETE" borderColor="#f93e3e" pathTitle="/api/companies/{:companyId}"
+                                 description="Deletes the company stored in DB which _id equals to :companyId"
+                                 needId={true}
+                                descriptionExtended=""
+                                uri="https://scary-vampire-95646.herokuapp.com/api/companies/"
+                                token ={this.state.token}
+                                buttonColor="danger"
                                 />
                             </div>
                             
