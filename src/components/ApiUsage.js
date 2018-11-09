@@ -17,16 +17,19 @@ class ApiUsage extends React.Component {
   }
 
   handleChange = (e) => {
-    this.setState({[e.target.name] : e.target.value});
+    this.setState({ [e.target.name]: e.target.value });
 
-}
-handleChangeBody = (e) => {
-  this.setState({[e.target.name] : JSON.parse(e.target.value)});
-}
+
+  }
+  handleChangeBody = (e) => {
+    this.setState({ [e.target.name]: JSON.parse(e.target.value) });
+  }
 
   toggle = () => {
-    this.setState({ collapse: !this.state.collapse, 
-     response: false,tryitout: false, responseCode: null, responseDetails: null, responseHeaders: null, body: example});
+    this.setState({
+      collapse: !this.state.collapse,
+      response: false, tryitout: false, responseCode: null, responseDetails: null, responseHeaders: null, body: example
+    });
   }
 
   tryitout = () => {
@@ -35,32 +38,33 @@ handleChangeBody = (e) => {
 
   handleClickExecute = () => {
     var uri = this.props.uri;
-    if(this.props.needId){
-      uri+=this.state._id;
+    if (this.props.needId) {
+      uri += this.state._id;
     }
     fetch(uri, {
       method: this.props.method,
-      headers: new Headers( {
+      headers: new Headers({
         "Content-Type": "application/json; charset=utf-8",
         "Authorization": "Bearer " + this.props.token
-      })
-      //body: JSON.stringify(data), 
+      }),
+      body: this.props.method === 'POST' || this.props.method === 'PUT' || this.props.method === 'PATCH'
+        ? JSON.stringify(this.state.body) : null,
     }).then((res) => {
       this.setState({
         responseCode: res['status'],
         responseHeaders: res['headers'],
       })
-      return res.json()
+      return this.props.method === 'DELETE' ? res : res.json()
     })
-    .then((response) => {
-      this.setState(
-        {
-          response: true,
-          responseDetails: JSON.stringify(response),
-          
-        }
-      );
-    });
+      .then((response) => {
+        this.setState(
+          {
+            response: true,
+            responseDetails: JSON.stringify(response),
+
+          }
+        );
+      });
 
 
 
@@ -106,53 +110,55 @@ handleChangeBody = (e) => {
                   </th>
                     <th>Description</th>
                   </tr>
-                  {this.props.pathTitle === '/api/companies' &&
+                  {this.props.pathTitle === '/api/companies' && !this.props.needId && this.props.method === 'GET' &&
                     <tr>
                       <td colSpan="2">There are no parameters for this method</td>
                     </tr>
                   }
                   {
                     this.props.needId &&
-                      <tr>
-                        <td>
-                          <strong style={{marginLeft: '3%'}}>id</strong>
-                          <strong style={{color: 'red', fontSize: 'small'}}>&nbsp;&nbsp;*required</strong>
-                          <p>(Type: String)</p>
+                    <tr>
+                      <td>
+                        <strong style={{ marginLeft: '3%' }}>id</strong>
+                        <br></br>
+                        <strong style={{ color: 'red', fontSize: '15px' }}>&nbsp;*required</strong>
+                        <p>(Type: String)</p>
 
-                        </td>
-                        <td>
-                          <p>Introduce the _id property value of the company to retrieve</p>
-                          <Input
-                            type="text"
-                            name="_id"
-                            id="_id"
-                            onChange={this.handleChange}
-                            placeholder="e.g: 52cdef7c4bab8bd675297d8b"
-                            value={this.state._id}
-                  />
-                        </td>
-                      </tr>
+                      </td>
+                      <td>
+                        <p>Introduce the _id property value of the company to retrieve</p>
+                        <Input
+                          type="text"
+                          name="_id"
+                          id="_id"
+                          onChange={this.handleChange}
+                          placeholder="e.g: 52cdef7c4bab8bd675297d8b"
+                          value={this.state._id}
+                        />
+                      </td>
+                    </tr>
                   }
                   {
                     this.props.needBody &&
                     <tr>
                       <td>
-                        <strong style={{marginLeft: '3%'}}>Body</strong>
-                        <strong style={{color: 'red', fontSize: 'small'}}>&nbsp;&nbsp;*required</strong>
+                        <strong style={{ marginLeft: '3%' }}>Body</strong>
+                        <br></br>
+                        <strong style={{ color: 'red', fontSize: 'small' }}>&nbsp;*required</strong>
                         <p>(Type: JSON)</p>
 
                       </td>
                       <td>
                         <p>Introduce the company in JSON format, it can be useful the following template given:</p>
-                        <Input style={{color: 'white', backgroundColor: '#41444e', height: '600px'}}
+                        <Input style={{ color: 'white', backgroundColor: '#41444e', height: '600px' }}
                           type="textarea"
                           name="body"
                           id="body"
                           onChange={this.handleChangeBody}
                           value={JSON.stringify(this.state.body, undefined, 2)}
-                          
-                          
-                          />
+
+
+                        />
                       </td>
                     </tr>
                   }
@@ -181,25 +187,33 @@ handleChangeBody = (e) => {
                   {this.state.response &&
                     <tr>
                       <td>
-                      {this.state.responseCode}
-                    </td>
+                        {this.state.responseCode}
+                      </td>
                       <td>
                         <p>Response body</p>
                         <div className="DivWithScroll">
                           <div className="DivToScroll">
-                          <JSONPretty style={{color: "white"}} id="json-pretty" json={this.state.responseDetails}></JSONPretty>
-                          
-                        </div>
+                            {this.state.responseDetails === '{}' &&
+                              <div>
+                                <p>No Content</p>
+                                <p>Delete done successfully</p>
+                              </div>
+                            }
+                            {this.state.responseDetails !== '{}' && <JSONPretty style={{ color: "white" }} id="json-pretty" json={this.state.responseDetails}></JSONPretty>}
+
+
+
+                          </div>
 
                         </div>
                         <br></br>
                         <p>Response headers</p>
                         <div style={{ paddingTop: '5px', borderRadius: '2px', height: '33px', backgroundColor: '#41444e', color: 'white' }}>
                           <div style={{ marginLeft: '3%', }}>
-                            
-                              {this.state.responseHeaders}
-                            
-                        </div>
+
+                            {this.state.responseHeaders}
+
+                          </div>
 
                         </div>
 

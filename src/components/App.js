@@ -213,7 +213,7 @@ class App extends React.Component {
                                  description="Deletes the company stored in DB which _id equals to :companyId"
                                  needId={true}
                                  needBody={false}
-                                descriptionExtended=""
+                                descriptionExtended="Returns an 201 No content response code if deletion was done successfully or 500 if something went wrong instead"
                                 uri="https://scary-vampire-95646.herokuapp.com/api/companies/"
                                 token ={this.state.token}
                                 buttonColor="danger"
