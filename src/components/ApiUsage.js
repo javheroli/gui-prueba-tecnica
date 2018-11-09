@@ -12,7 +12,7 @@ class ApiUsage extends React.Component {
     this.state = {
       collapse: false, tryitout: false,
       response: false, responseCode: null, responseDetails: null, responseHeaders: null,
-      _id: '', body: example,
+      _id: '',  exampleString: JSON.stringify(example, undefined, 2)
     };
   }
 
@@ -22,13 +22,17 @@ class ApiUsage extends React.Component {
 
   }
   handleChangeBody = (e) => {
-    this.setState({ [e.target.name]: JSON.parse(e.target.value) });
+    this.setState({exampleString : e.target.value})
+    
   }
+
+  
+
 
   toggle = () => {
     this.setState({
       collapse: !this.state.collapse,
-      response: false, tryitout: false, responseCode: null, responseDetails: null, responseHeaders: null, body: example
+      response: false, tryitout: false, responseCode: null, responseDetails: null, responseHeaders: null, exampleString: JSON.stringify(example, undefined, 2)
     });
   }
 
@@ -48,13 +52,19 @@ class ApiUsage extends React.Component {
         "Authorization": "Bearer " + this.props.token
       }),
       body: this.props.method === 'POST' || this.props.method === 'PUT' || this.props.method === 'PATCH'
-        ? JSON.stringify(this.state.body) : null,
+        ? this.state.exampleString : null,
     }).then((res) => {
       this.setState({
         responseCode: res['status'],
         responseHeaders: res['headers'],
       })
-      return this.props.method === 'DELETE' ? res : res.json()
+      console.log(this.state.responseCode)
+      if(this.state.responseCode !== 400){
+        return this.props.method === 'DELETE' ? res : res.json();
+      }else{
+        return res;
+      }
+      
     })
       .then((response) => {
         this.setState(
@@ -155,7 +165,7 @@ class ApiUsage extends React.Component {
                           name="body"
                           id="body"
                           onChange={this.handleChangeBody}
-                          value={JSON.stringify(this.state.body, undefined, 2)}
+                          value={this.state.exampleString}
 
 
                         />
@@ -193,10 +203,24 @@ class ApiUsage extends React.Component {
                         <p>Response body</p>
                         <div className="DivWithScroll">
                           <div className="DivToScroll">
-                            {this.state.responseDetails === '{}' &&
+                            {this.state.responseDetails === '{}' && this.state.responseCode === 204 &&
                               <div>
                                 <p>No Content</p>
                                 <p>Delete done successfully</p>
+                              </div>
+                            }
+                            {this.state.responseCode === 400 &&
+                              <div>
+                                <p>Bad Request</p>
+                                <p>Check your JSON input!</p>
+                                
+                              </div>
+                            }
+                            {this.state.responseCode === 500 &&
+                              <div>
+                                <p>Internal Server Error</p>
+                                <p>Id introduced doesn't exist in DB</p>
+                                
                               </div>
                             }
                             {this.state.responseDetails !== '{}' && <JSONPretty style={{ color: "white" }} id="json-pretty" json={this.state.responseDetails}></JSONPretty>}
