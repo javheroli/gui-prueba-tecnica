@@ -46,7 +46,7 @@ class App extends React.Component {
         var data = {'username':this.state.username,
                     'password' : this.state.password,
                      }
-        fetch('https://scary-vampire-95646.herokuapp.com/api/user/signup', {
+        fetch('https://prueba-tecnica-jho.herokuapp.com/api/user/signup', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json; charset=utf-8",
@@ -82,7 +82,7 @@ class App extends React.Component {
         var data = {'username':this.state.username,
                     'password' : this.state.password,
                      }
-        fetch('https://scary-vampire-95646.herokuapp.com/api/user/login', {
+        fetch('https://prueba-tecnica-jho.herokuapp.com/api/user/login', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json; charset=utf-8",
@@ -163,7 +163,7 @@ class App extends React.Component {
                                  needId={false}
                                  needBody={false}
                                 descriptionExtended="Returns a Json composed of all companies stored in the database, for each company every attributes or fields availables will be displayed"
-                                uri="https://scary-vampire-95646.herokuapp.com/api/companies"
+                                uri="https://prueba-tecnica-jho.herokuapp.com/api/companies"
                                 token ={this.state.token}
                                 buttonColor="primary"
                                 />
@@ -173,7 +173,7 @@ class App extends React.Component {
                                  needId={true}
                                  needBody={false}
                                 descriptionExtended="Returns a Json composed of the company stored in the database which _id field equals to the one introduced, for the company every attributes or fields availables will be displayed"
-                                uri="https://scary-vampire-95646.herokuapp.com/api/companies/"
+                                uri="https://prueba-tecnica-jho.herokuapp.com/api/companies/"
                                 token ={this.state.token}
                                 buttonColor="primary"
                                 />
@@ -183,7 +183,7 @@ class App extends React.Component {
                                  needId={false}
                                  needBody={true}
                                 descriptionExtended="Returns a Json composed of the new company created and stored in database, displaying all fields introduced and its values"
-                                uri="https://scary-vampire-95646.herokuapp.com/api/companies"
+                                uri="https://prueba-tecnica-jho.herokuapp.com/api/companies"
                                 token ={this.state.token}
                                 buttonColor="success"
                                 />
@@ -193,7 +193,7 @@ class App extends React.Component {
                                  needId={true}
                                  needBody={true}                                 
                                 descriptionExtended="Returns a Json composed of the updated company and stored in database, displaying all fields with its values changed"
-                                uri="https://scary-vampire-95646.herokuapp.com/api/companies/"
+                                uri="https://prueba-tecnica-jho.herokuapp.com/api/companies/"
                                 token ={this.state.token}
                                 buttonColor="warning"
                                 />
@@ -204,7 +204,7 @@ class App extends React.Component {
                                  needId={true}
                                  needBody={true}
                                 descriptionExtended="Returns a Json composed of the updated company and stored in database, displaying all fields with its values changed"
-                                uri="https://scary-vampire-95646.herokuapp.com/api/companies/"
+                                uri="https://prueba-tecnica-jho.herokuapp.com/api/companies/"
                                 token ={this.state.token}
                                 buttonColor="warning"
                                 />
@@ -214,7 +214,7 @@ class App extends React.Component {
                                  needId={true}
                                  needBody={false}
                                 descriptionExtended="Returns an 201 No content response code if deletion was done successfully or 500 if something went wrong instead"
-                                uri="https://scary-vampire-95646.herokuapp.com/api/companies/"
+                                uri="https://prueba-tecnica-jho.herokuapp.com/api/companies/"
                                 token ={this.state.token}
                                 buttonColor="danger"
                                 />
